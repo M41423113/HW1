@@ -54,7 +54,7 @@ for i in range (45):
  
 around4
 
-    turn_left()
+def turn_left()
     turn_left()
     turn_left()
 for i in range (50):
