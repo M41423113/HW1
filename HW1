@@ -1,28 +1,16 @@
 around1
-# 1. 向右走 9 步 
-for i in range(9):
+def turn_right():
+    turn_left()
+    turn_left()
+    turn_left()
+put()
+if front_is_clear():
     move()
-    
-# 轉向：從右轉為上
-turn_left()
-
-# 2. 向上走 9 步 
-for i in range(9):
-    move()
-
-# 轉向：從上轉為左
-turn_left()
-
-# 3. 向左走 9 步 
-for i in range(9):
-    move()
-
-# 轉向：從左轉為下
-turn_left()
-
-# 4. 向下走 9 步 
-for i in range(9):
-    move()
+while not object_here():
+    if wall_in_front(): 
+        turn_left()
+    else:                 
+        move()
  
 
 around2
@@ -30,35 +18,49 @@ def turn_right():
     turn_left()
     turn_left()
     turn_left()
-for i in range (41):
-    if right_is_clear():
+put()
+if front_is_clear():
+    move()
+while not object_here():
+    if right_is_clear():  
         turn_right()
         move()
-    elif front_is_clear():
-        move()
-    else:
+    elif wall_in_front(): 
         turn_left()
+    else:                 
+        move()
+
+
 around3
 def turn_right():
     turn_left()
     turn_left()
     turn_left()
-for i in range (45):
-    if right_is_clear():
+put()
+if wall_in_front():
+    turn_left()
+    move()
+while not object_here():
+    if right_is_clear():  
         turn_right()
         move()
-    elif front_is_clear():
-        move()
-    else:
+    elif wall_in_front(): 
         turn_left()
- 
-around4
+    else:                 
+        move()
 
-def turn_right()
+
+around4
+def turn_right():
     turn_left()
     turn_left()
     turn_left()
-for i in range (50):
+put()
+if wall_in_front():
+    turn_left()
+    turn_left()
+    move()
+while not object_here():
     if right_is_clear():
         turn_right()
         move()
