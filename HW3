@@ -1,3 +1,4 @@
+#水平
 from brython_robot4 import init, load_scene_from_url, get_url_parameter
 from browser import aio
 
@@ -32,6 +33,75 @@ async def robot_actions(robot):
             await robot.turn_right()
             await robot.move(1)
             await robot.turn_right()
+                
+        # 當所有方向都探索完畢，標記探索完成
+        exploration_done = True
+        return
+    
+    # 執行探索函式
+    await explore_and_collect()
+    
+    # 所有的探索和回溯動作都結束後，才會執行這裡的程式碼
+    print("所有可達格子都已探索完畢。")
+    print(f"程式執行完畢。總共採收了 {robot.carrots_collected} 個胡蘿蔔。")
+
+# 程式啟動點
+async def main():
+    world_url = get_url_parameter('world')
+    if world_url:
+        scene_data = await load_scene_from_url(world_url)
+        # 設定機器人容量上限為 50
+        world, robot = init(scene_data, robot_config={"max_carrots": 50})
+    else:
+        # 預設場景也設定容量上限
+        world, robot = init(robot_config={"max_carrots": 50})
+
+    if robot:
+        await robot_actions(robot)
+
+# 啟動主程式
+aio.run(main())
+
+
+
+
+
+#垂直
+from brython_robot4 import init, load_scene_from_url, get_url_parameter
+from browser import aio
+
+# 機器人行為腳本
+async def robot_actions(robot):
+    print("開始執行機器人程式，探索並採收所有胡蘿蔔。")
+    # 新增旗標來控制回溯
+    exploration_done = False
+    
+    async def explore_and_collect():
+        nonlocal exploration_done
+
+        # 在當前格子採收所有胡蘿蔔，直到該格清空
+        while robot.background_is("pale_grass"):
+            robot.pick_carrot()
+
+        # 將當前格子標記為已走過
+        robot.visited.add((robot.base.x, robot.base.y))
+
+        # 定義四個方向，依序檢查
+        async def turn_right():
+            for _ in range(3):
+                await robot.turn_left(1)
+        await robot.turn_left()
+        for _ in range(5):
+            for _ in range(9):
+                if robot.front_is_clear():
+                    await robot.move(1)
+            await robot.turn_right(1)
+            await robot.move(1)
+            await robot.turn_right(1)
+            await robot.move(9)
+            await robot.turn_left(1)
+            await robot.move(1)
+            await robot.turn_left(1)
                 
         # 當所有方向都探索完畢，標記探索完成
         exploration_done = True
